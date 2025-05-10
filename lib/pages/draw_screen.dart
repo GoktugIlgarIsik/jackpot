@@ -28,6 +28,7 @@ class _DrawScreenState extends State<DrawScreen> {
       'winnerCount': winnerCount,
       'timestamp': FieldValue.serverTimestamp(), // Use Firestore timestamp
       'createdBy': widget.userName,
+      'gameType': 'normal', // <--- Add this line
     };
     await FirebaseFirestore.instance.collection('games').add(record);
   }

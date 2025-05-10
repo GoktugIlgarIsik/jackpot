@@ -17,34 +17,14 @@ class AnimatedLoginPage extends StatefulWidget {
   _AnimatedLoginPageState createState() => _AnimatedLoginPageState();
 }
 
-class _AnimatedLoginPageState extends State<AnimatedLoginPage>
-    with SingleTickerProviderStateMixin {
-  bool _hover = false;
-  late AnimationController _controller;
+class _AnimatedLoginPageState extends State<AnimatedLoginPage> {
   final _formKey = GlobalKey<FormState>();
-
   String email = '', password = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 6),
-    )..repeat();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   Future<void> _signInWithEmail() async {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
 
-    // Debug: print credentials
     print("Trying to login with email: '$email', password: '$password'");
 
     if (email.isEmpty || password.isEmpty) {
@@ -75,7 +55,7 @@ class _AnimatedLoginPageState extends State<AnimatedLoginPage>
         context,
       ).showSnackBar(SnackBar(content: Text("Email ile giriş başarılı!")));
     } catch (e) {
-      print("Login2 error: $e"); // <-- Add this line
+      print("Login2 error: $e");
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Hata: ${e.toString()}")));
@@ -128,130 +108,78 @@ class _AnimatedLoginPageState extends State<AnimatedLoginPage>
     return Scaffold(
       backgroundColor: Color(0xFF25252B),
       body: Center(
-        child: MouseRegion(
-          onEnter: (_) => setState(() => _hover = true),
-          onExit: (_) => setState(() => _hover = false),
-          child: AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return ShaderMask(
-                shaderCallback: (bounds) {
-                  return SweepGradient(
-                    startAngle: 0,
-                    endAngle: 6.28,
-                    colors: [
-                      Colors.orangeAccent,
-                      Colors.transparent,
-                      Colors.orangeAccent,
-                    ],
-                    transform: GradientRotation(_controller.value * 6.28),
-                  ).createShader(bounds);
-                },
-                blendMode: BlendMode.srcATop,
-                child: AnimatedContainer(
-                  duration: Duration(milliseconds: 500),
-                  width: _hover ? 450 : 400,
-                  height: _hover ? 500 : 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFF2D2D39),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.orangeAccent.withOpacity(0.6),
-                        blurRadius: 25,
-                        spreadRadius: 5,
+        child: Container(
+          width: 400,
+          padding: EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Color(0xFF2D2D39),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.orangeAccent.withOpacity(0.2),
+                blurRadius: 15,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.rightToBracket,
+                      color: Colors.orangeAccent,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      "LOGIN",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        letterSpacing: 2,
                       ),
-                    ],
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Container(
-                          margin: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF2D2D39),
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: Color(0xFF25252B),
-                              width: 8,
-                            ),
-                          ),
-                        ),
-                      ),
-                      if (_hover)
-                        Center(
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      FontAwesomeIcons.rightToBracket,
-                                      color: Colors.orangeAccent,
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      "LOGIN",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        letterSpacing: 2,
-                                      ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    Icon(
-                                      FontAwesomeIcons.dice,
-                                      color: Colors.white,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 20),
-                                _buildTextField(
-                                  "Email",
-                                  onSaved: (val) => email = val!,
-                                ),
-                                SizedBox(height: 10),
-                                _buildTextField(
-                                  "Password",
-                                  obscure: true,
-                                  onSaved: (val) => password = val!,
-                                ),
-                                SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: _signInWithEmail,
-                                  child: Text("Sign In with Email"),
-                                ),
-                                SizedBox(height: 10),
-                                ElevatedButton(
-                                  onPressed: _signUpWithEmail,
-                                  child: Text("Sign Up"),
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        "Forgot Password",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(FontAwesomeIcons.dice, color: Colors.white),
+                  ],
                 ),
-              );
-            },
+                SizedBox(height: 20),
+                _buildTextField("Email", onSaved: (val) => email = val!),
+                SizedBox(height: 10),
+                _buildTextField(
+                  "Password",
+                  obscure: true,
+                  onSaved: (val) => password = val!,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _signInWithEmail,
+                  child: Text("Sign In with Email"),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _signUpWithEmail,
+                  child: Text("Sign Up"),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Forgot Password",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
