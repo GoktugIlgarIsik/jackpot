@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "392802939910",
+    "project_id": "jackpot2-b5af1",
+    "storage_bucket": "jackpot2-b5af1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392802939910:android:f40a191e33fd7adcfbbf87",
+        "android_client_info": {
+          "package_name": "com.example.jackpot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGDaCibIZDYBOai0DD2JFcoWvdzdULOKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
